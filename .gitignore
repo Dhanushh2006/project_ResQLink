@@ -1,0 +1,31 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# next
+/.next/
+/out/
+/build
+next-env.d.ts
+
+# database (generated at runtime)
+/data/*.db
+/data/*.db-journal
+/data/*.db-wal
+/data/*.db-shm
+
+# env
+.env
+.env.local
+.env*.local
+
+# misc
+.DS_Store
+*.log
+/coverage
+.vercel
+.vitest
+
+# runtime data store (JSON persistence)
+/data/*.json
