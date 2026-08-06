@@ -1,0 +1,224 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --font-display: 'Archivo', 'Inter', system-ui, sans-serif;
+  --font-poster: 'Anton', 'Archivo', Impact, sans-serif;
+}
+
+html,
+body {
+  background: #0e1608;
+  color: #eef3e6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #35481f transparent;
+}
+*::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+*::-webkit-scrollbar-thumb {
+  background: #35481f;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: #4d7c0f;
+  background-clip: padding-box;
+}
+
+::selection {
+  background: rgba(163, 230, 53, 0.30);
+  color: #0e1608;
+}
+
+@layer base {
+  h1, h2, h3, h4 {
+    letter-spacing: -0.011em;
+  }
+}
+
+/* ---------- Editorial display utilities ---------- */
+.font-poster {
+  font-family: var(--font-poster);
+  font-weight: 400;
+  letter-spacing: 0.005em;
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+.display-index {
+  font-family: var(--font-poster);
+  font-variant-numeric: tabular-nums;
+}
+.rule {
+  height: 1px;
+  background: currentColor;
+  opacity: 0.35;
+}
+
+@layer components {
+  /* ---------- Surfaces ---------- */
+  .panel {
+    @apply rounded-xl border border-line/80 bg-surface shadow-panel;
+  }
+  .panel-raised {
+    @apply rounded-xl border border-line/70 bg-raised shadow-raised;
+  }
+  .panel-header {
+    @apply flex items-center justify-between gap-3 border-b border-line/70 px-4 py-3;
+  }
+  .panel-title {
+    @apply text-[13px] font-semibold tracking-tight text-ink;
+  }
+
+  /* ---------- Buttons ---------- */
+  .btn {
+    @apply inline-flex select-none items-center justify-center gap-2 rounded-lg px-3.5 py-2 text-[13px] font-medium leading-none transition-all duration-150
+           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400/60 focus-visible:ring-offset-2 focus-visible:ring-offset-bg
+           disabled:cursor-not-allowed disabled:opacity-50 active:scale-[0.98];
+  }
+  .btn-primary {
+    @apply btn bg-brand-400 text-bg hover:bg-brand-300;
+  }
+  .btn-ghost {
+    @apply btn border border-line bg-raised/60 text-ink-muted hover:border-line hover:bg-overlay hover:text-ink;
+  }
+  .btn-subtle {
+    @apply btn bg-overlay/60 text-ink-muted hover:bg-overlay hover:text-ink;
+  }
+  .btn-danger {
+    @apply btn bg-sev-critical text-white hover:brightness-110;
+  }
+  .btn-sm {
+    @apply px-2.5 py-1.5 text-xs;
+  }
+  .btn-xs {
+    @apply gap-1 rounded-md px-2 py-1 text-2xs;
+  }
+  .icon-btn {
+    @apply inline-flex h-8 w-8 items-center justify-center rounded-lg border border-line/70 bg-raised/60 text-ink-muted transition-colors hover:bg-overlay hover:text-ink
+           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400/60;
+  }
+
+  /* ---------- Inputs ---------- */
+  .input {
+    @apply w-full rounded-lg border border-line bg-bg/70 px-3 py-2 text-[13px] text-ink
+           placeholder:text-ink-faint transition-colors focus:border-brand-400/70 focus:outline-none focus:ring-1 focus:ring-brand-400/50;
+  }
+  .label {
+    @apply mb-1.5 block text-2xs font-semibold uppercase tracking-wider text-ink-faint;
+  }
+
+  /* ---------- Chips / badges ---------- */
+  .chip {
+    @apply inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-2xs font-semibold uppercase tracking-wide;
+  }
+  .filter-chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium transition-colors;
+  }
+  .filter-chip-on {
+    @apply border-brand-400/50 bg-brand-400/10 text-brand-300;
+  }
+  .filter-chip-off {
+    @apply border-line text-ink-faint hover:border-line hover:text-ink-muted;
+  }
+
+  /* ---------- Data table ---------- */
+  .dtable {
+    @apply w-full text-[13px];
+  }
+  .dtable thead th {
+    @apply sticky top-0 z-10 bg-surface/95 px-4 py-2.5 text-left text-2xs font-semibold uppercase tracking-wider text-ink-faint backdrop-blur;
+  }
+  .dtable tbody td {
+    @apply px-4 py-2.5 align-middle;
+  }
+  .dtable tbody tr {
+    @apply border-t border-line-soft transition-colors hover:bg-raised/50;
+  }
+
+  .kbd {
+    @apply inline-flex h-5 min-w-[20px] items-center justify-center rounded border border-line bg-raised px-1.5 font-mono text-2xs text-ink-muted;
+  }
+
+  .stat-tile {
+    @apply relative overflow-hidden rounded-xl border border-line/70 bg-surface px-4 py-3;
+  }
+
+  .nav-item {
+    @apply relative flex items-center gap-3 rounded-lg px-3 py-2 text-[13px] font-medium transition-colors;
+  }
+  .nav-item-on {
+    @apply bg-brand-400/10 text-brand-300;
+  }
+  .nav-item-off {
+    @apply text-ink-faint hover:bg-raised/70 hover:text-ink;
+  }
+
+  .divider {
+    @apply h-px w-full bg-line/70;
+  }
+}
+
+/* ---------- Map theming (green EOC) ---------- */
+.map-tiles {
+  filter: brightness(0.58) contrast(1.15) saturate(0.6) hue-rotate(58deg) invert(0.95);
+}
+.leaflet-container {
+  background: #0c1207 !important;
+  font-family: inherit;
+}
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background: #1e2c12 !important;
+  color: #eef3e6 !important;
+  border: 1px solid #35481f;
+  border-radius: 10px !important;
+}
+.leaflet-popup-content { margin: 10px 12px !important; font-size: 12px; }
+.leaflet-bar a {
+  background: #1e2c12 !important;
+  color: #eef3e6 !important;
+  border-color: #35481f !important;
+}
+.leaflet-bar a:hover { background: #273818 !important; }
+.leaflet-control-attribution {
+  background: rgba(14,22,8,0.7) !important;
+  color: #7e8e64 !important;
+}
+.leaflet-control-attribution a { color: #aebe97 !important; }
+
+/* ---------- Skeleton ---------- */
+.skeleton {
+  background: linear-gradient(90deg, #16210d 25%, #273818 37%, #16210d 63%);
+  background-size: 400% 100%;
+  animation: shimmer 1.4s ease infinite;
+}
+@keyframes shimmer {
+  0% { background-position: 100% 50%; }
+  100% { background-position: 0 50%; }
+}
+
+.marker-pulse {
+  animation: pulseRing 2s infinite;
+}
+
+/* subtle map grid for the mini operational surface */
+.grid-backdrop {
+  background-image:
+    linear-gradient(rgba(163,230,53,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(163,230,53,0.05) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
