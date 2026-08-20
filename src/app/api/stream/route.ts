@@ -7,7 +7,11 @@ import { subscribe } from '@/lib/bus';
 import { requireSession } from '@/lib/api';
 import { ensureSeeded } from '@/lib/bootstrap';
 
+export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
+// Keep the SSE connection open up to the platform limit; the client
+// reconnects automatically when it closes.
+export const maxDuration = 60;
 
 export async function GET() {
   ensureSeeded();

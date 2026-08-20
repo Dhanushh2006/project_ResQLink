@@ -34,10 +34,12 @@ Requirements: Node.js 18.18+ and npm.
 
 ```bash
 npm install
-cp .env.example .env.local   # optional; app runs without any keys
-npm run seed                 # load sample data (also auto-seeds on first run)
-npm run dev                  # http://localhost:3000
+npm run dev   # http://localhost:3000
 ```
+
+The app runs without any configuration and seeds sample data on first
+request. To create secrets or point at an LLM, add a `.env.local`
+(see [Configuration](#configuration)).
 
 Sample accounts (password `resqlink`):
 
@@ -64,7 +66,8 @@ Sample accounts (password `resqlink`):
 
 ## Configuration
 
-All environment variables are optional — see [`.env.example`](./.env.example).
+All environment variables are optional. Create a `.env.local` for local
+development, or set them in your hosting provider's dashboard.
 
 | Variable                  | Purpose                                         | Default                       |
 | ------------------------- | ----------------------------------------------- | ----------------------------- |
@@ -80,6 +83,24 @@ The intelligence layer sits behind an `AiProvider` interface
 (`src/lib/ai`). The default `local` implementation is a deterministic
 rule engine; set `AI_PROVIDER=openai` with a key to use an LLM, which
 falls back to the rule engine on any error.
+
+## Deployment
+
+The app deploys to [Vercel](https://vercel.com) with no configuration —
+import the repository and Vercel detects the Next.js project and builds
+it. Recommended settings:
+
+- Set **`AUTH_SECRET`** (any long random string) in the project's
+  Environment Variables so sessions are signed with your own key.
+- Optionally set `AI_PROVIDER=openai` and `OPENAI_API_KEY` to use an LLM.
+
+On serverless platforms the working directory is read-only, so the data
+store writes to the system temp directory automatically. This makes the
+included JSON store suitable for demos and single-instance use; state is
+per-instance and not shared across serverless invocations. For a shared,
+durable deployment, point `src/lib/db.ts` at a database (the repository
+interface is designed for this) — Postgres for storage and Redis for the
+event bus.
 
 ## Architecture
 

@@ -5,14 +5,33 @@
 // the storage backend can be swapped (e.g. Postgres) without touching
 // the service layer. Reads are linear scans, which is fine for the
 // operational dataset sizes we work with (hundreds of rows).
+//
+// Storage location resolves in this order:
+//   1. RESQLINK_DB_PATH (explicit override)
+//   2. <cwd>/data/resqlink.json          when that dir is writable
+//   3. <os.tmpdir>/resqlink.json         serverless (read-only cwd)
+// If no location is writable the store still works in memory for the
+// lifetime of the process.
 
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import type { DbShape } from './types';
 
-const DB_PATH =
-  process.env.RESQLINK_DB_PATH ||
-  path.join(process.cwd(), 'data', 'resqlink.json');
+function resolveDbPath(): string {
+  if (process.env.RESQLINK_DB_PATH) return process.env.RESQLINK_DB_PATH;
+  const local = path.join(process.cwd(), 'data', 'resqlink.json');
+  try {
+    fs.mkdirSync(path.dirname(local), { recursive: true });
+    fs.accessSync(path.dirname(local), fs.constants.W_OK);
+    return local;
+  } catch {
+    // Read-only working directory (e.g. serverless): fall back to tmp.
+    return path.join(os.tmpdir(), 'resqlink.json');
+  }
+}
+
+const DB_PATH = resolveDbPath();
 
 const EMPTY: DbShape = {
   users: [],
